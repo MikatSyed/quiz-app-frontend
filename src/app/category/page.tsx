@@ -1,7 +1,6 @@
 "use client"
 import Link from 'next/link';
 import Image from 'next/image';
-// import quiz from "../../assets/Business Plan-amico.png";
 import category from "../../../public/assets/Webinar-cuate.png";
 import { useCategoriesQuery } from '@/redux/api/categoryApi';
 import Navbar from '@/components/Navbar/Navbar';
