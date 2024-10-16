@@ -58,7 +58,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 transform transition-transform duration-300 ease-in-out bg-gray-800 text-white flex flex-col justify-between w-64 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
         <div>
-          <Link href="/">
+          <Link href="/category">
             <div className="flex items-center justify-center h-16 bg-gray-900 text-lg font-bold">
               Quiz App
             </div>

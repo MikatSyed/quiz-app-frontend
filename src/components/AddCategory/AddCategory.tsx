@@ -60,9 +60,9 @@ const AddCategory = () => {
   
   <button
     type="submit"
-    className="text-sm text-white bg-purple-800 hover:bg-purple-900 h-full mt-5"
+    className="text-sm text-white bg-purple-800 hover:bg-purple-900 h-full mt-7"
   >
-    Add
+    Add Category
   </button>
 </div>
       </Form>
