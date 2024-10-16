@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import Form from "../UI/Forms/Form";
 import FormInput from "../UI/FormInput/FormInput";
@@ -8,6 +8,10 @@ import { useSigninMutation } from "@/redux/api/authApi";
 import { SubmitHandler } from "react-hook-form";
 import { storeUserInfo } from "../../../services/auth.service";
 import toast, { Toaster } from "react-hot-toast";
+import { yupResolver } from "@hookform/resolvers/yup";
+import loginSchema from "@/schemas/login";
+import Image from "next/image"; // Ensure you have your logo file at this path
+import logo from '../../../public/assets/logo (2).png';
 
 type FormValues = {
   email: string;
@@ -15,57 +19,86 @@ type FormValues = {
 };
 
 const SignInPage = () => {
-  const {push} = useRouter();
-  const [signin] = useSigninMutation()
+  const { push } = useRouter();
+  const [signin] = useSigninMutation();
+
+  // Handle regular sign in
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
     try {
       const res = await signin({ ...data }).unwrap();
-      console.log(res);
+
       if (res?.token) {
+        storeUserInfo({ accessToken: res?.token });
         push("/home");
-       
       }
-      storeUserInfo({ accessToken: res?.token });
-     
     } catch (err: any) {
-      toast.error(err?.data)
-  
+      console.log(err, '31');
+      toast.error(err?.data);
     }
   };
+
+  // Handle admin login
+  const handleAdminLogin = async () => {
+    const adminCredentials = {
+      email: "mikat@gmail.com",
+      password: "mikat123",
+    };
+
+    try {
+      const res = await signin(adminCredentials).unwrap();
+
+      if (res?.token) {
+        storeUserInfo({ accessToken: res?.token });
+        push("/profile");
+      }
+    } catch (err: any) {
+      console.log(err, '41');
+      toast.error(err?.data);
+    }
+  };
+
   return (
-   <>
+    <>
       <Toaster position="top-center" reverseOrder={false} />
-    <div className="flex flex-col items-center justify-center h-screen">
-    
-    <div className="bg-white rounded-lg overflow-hidden shadow-md p-8 w-96">
-      <h2 className="text-2xl font-semibold mb-6">SignIn</h2>
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div className="bg-white rounded-lg overflow-hidden shadow-md p-8 w-96">
+          <div className="flex justify-center py-6">
+            <h1 className="text-4xl font-semibold"><span className="text-purple-900">Quiz</span> App</h1>
+          </div>
 
-      <Form submitHandler={onSubmit}>
-       
-        <div className="mb-4">
-          <FormInput name="email" label="Email" />
+          <h2 className="text-2xl font-semibold mb-6">Sign In</h2>
+
+          <Form submitHandler={onSubmit} resolver={yupResolver(loginSchema)}>
+            <div className="mb-4">
+              <FormInput name="email" label="Email" />
+            </div>
+            <div className="mb-4">
+              <FormInput name="password" label="Password" type="password" />
+            </div>
+
+            <button
+              type="submit"
+              className="text-sm text-white bg-purple-800 hover:bg-purple-900 px-4 py-4 rounded-full w-full transition duration-300"
+            >
+              Login
+            </button>
+          </Form>
+
+          <div className="mt-4">
+            <button
+              onClick={handleAdminLogin} 
+              className="text-sm text-white bg-purple-800 hover:bg-purple-900 px-4 py-4 rounded-full w-full transition duration-300"
+            >
+              Login as Admin
+            </button>
+          </div>
+
+          <p className="mt-4 text-sm">
+            Don't have an account? <span className="text-blue-500 hover:underline"><Link href="/signup"> Register here</Link></span>
+          </p>
         </div>
-        <div className="mb-4">
-          <FormInput name="password" label="Password" type="password" />
-        </div>
-
-        <button
-          type="submit"
-          className="text-sm text-white bg-purple-800 hover:bg-purple-900 px-4 py-2 rounded-full w-full"
-        >
-          Submit
-        </button>
-      </Form>
-
-     
-        <p className="mt-4 text-sm ">
-          Don't have an account? <span className="text-blue-500 hover:underline"> <Link href="/signup"> Register here</Link></span>
-        </p>
-
-
-    </div>
-  </div>
-   </>
+      </div>
+    </>
   );
 };
 

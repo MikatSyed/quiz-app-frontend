@@ -45,7 +45,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({
       >
         Start the Quiz Again
       </button>
-      <div className="flex space-x-4">
+      <div className="flex space-x-2">
         <Link href="/leaderboard">
           <button className="bg-purple-800 text-white py-3 rounded-md hover:bg-purple-900 transition">
             See Leader Board

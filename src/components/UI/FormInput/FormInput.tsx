@@ -53,7 +53,7 @@ const FormInput: React.FC<FormInputProps> = ({
             style={customStyle}
             {...field}
             value={value ? value : field.value}
-            className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300
+            className="mt-1 p-3 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300
                        transition duration-300 ease-in-out
                        hover:border-blue-500 focus:border-blue-500"
           />

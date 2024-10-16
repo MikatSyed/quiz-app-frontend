@@ -3,26 +3,22 @@ import React from "react";
 import Form from "../UI/Forms/Form";
 import FormInput from "../UI/FormInput/FormInput";
 import Link from "next/link";
-import FormSelectField from "../UI/FormSelectField/FormSelectField";
-import { roleOptions } from "@/constants/constants";
 import { useSignupMutation } from "@/redux/api/authApi";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { error } from "console";
+import { yupResolver } from "@hookform/resolvers/yup";
+import signUpSchema from "@/schemas/signup";
 
 const SignUpPage = () => {
     const {push} = useRouter();
   const [signup] = useSignupMutation()
 
   const onSubmit = async (values:any) => {
-   if(values.role === undefined){
-    values.role = "admin"
-   }
- 
+    values.role = "performer"
     try {
         const res = await signup(values)
         console.log(res);
-        toast("User created successfully", {
+        toast("Register successfully", {
             icon: <span style={{ color: "white" }}>✔</span>,
             style: {
               borderRadius: "10px",
@@ -48,9 +44,9 @@ const SignUpPage = () => {
     <div className="bg-white rounded-lg overflow-hidden shadow-md p-8 w-96">
       <h2 className="text-2xl font-semibold mb-6">SignUp</h2>
 
-      <Form submitHandler={onSubmit}>
+      <Form submitHandler={onSubmit} resolver={yupResolver(signUpSchema)}>
       <div className="mb-4">
-          <FormInput name="username" label="UserName" size="large"/>
+          <FormInput name="username" label="Name" size="large"/>
         </div>
         <div className="mb-4">
           <FormInput name="email" label="Email" size="large"/>
@@ -59,30 +55,21 @@ const SignUpPage = () => {
           <FormInput name="password" label="Password" type="password" size="large"/>
         </div>
 
-        <div className="mb-4">
-         <FormSelectField
-                  size="large"
-                  name="role"
-                  options={roleOptions}
-                  label="Role"
-                  placeholder="Select"
-                />
-        </div>
-
+      
 
         <button
           type="submit"
-          className="text-sm text-white bg-purple-800 hover:bg-purple-900 px-4 py-2 rounded-full w-full"
+          className="text-sm text-white bg-purple-800 hover:bg-purple-900 px-4 py-4 rounded-full w-full"
         >
-          Submit
+          Sign Up
         </button>
       </Form>
 
-      <Link href="/signin">
-        <p className="mt-4 text-sm text-blue-500 hover:underline">
-          Already have an account? SignIn here
+      
+        <p className="mt-4 text-sm ">
+          Already have an account? <Link href="/signin"><span className="text-blue-500 hover:underline">Signin here</span></Link>
         </p>
-      </Link>
+     
     </div>
   </div>
    </>
