@@ -20,6 +20,7 @@ const SignUpPage = () => {
  
     try {
         const res = await signup(values)
+        console.log(res);
         toast("User created successfully", {
             icon: <span style={{ color: "white" }}>✔</span>,
             style: {
@@ -30,9 +31,9 @@ const SignUpPage = () => {
             duration: 2000,
           });
 
-      setTimeout(() => {
-        push("/signin")
-      }, 2000);
+      // setTimeout(() => {
+      //   push("/signin")
+      // }, 2000);
     } catch (err) {
       console.log(err);
     }
