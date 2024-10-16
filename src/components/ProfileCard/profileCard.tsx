@@ -1,6 +1,6 @@
 "use client"
 import { FaEdit } from 'react-icons/fa';
-import profile from "../../assets/images (2).jpg"
+import profile from "../../../public/assets/images (2).jpg"
 import Image from 'next/image';
 import Link from 'next/link';
 

@@ -8,6 +8,7 @@ import { roleOptions } from "@/constants/constants";
 import { useSignupMutation } from "@/redux/api/authApi";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { error } from "console";
 
 const SignUpPage = () => {
     const {push} = useRouter();
@@ -31,11 +32,11 @@ const SignUpPage = () => {
             duration: 2000,
           });
 
-      // setTimeout(() => {
-      //   push("/signin")
-      // }, 2000);
-    } catch (err) {
-      console.log(err);
+      setTimeout(() => {
+        push("/signin")
+      }, 2000);
+    } catch (err:any) {
+      toast.error(err?.data)
     }
   };
 

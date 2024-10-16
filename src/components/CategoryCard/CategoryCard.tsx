@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import React from 'react';
-import img from "../../assets/math_icon.6a51555075cdf2ef1306.png"
+import img from "../../../public/assets/math_icon.6a51555075cdf2ef1306.png"
 import Link from 'next/link';
 
 const CategoryCard = (data:any) => {
     const {title,id} = data;
-    console.log(id);
+   
   
     return (
      <>

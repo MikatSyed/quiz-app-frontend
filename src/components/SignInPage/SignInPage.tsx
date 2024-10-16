@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useSigninMutation } from "@/redux/api/authApi";
 import { SubmitHandler } from "react-hook-form";
 import { storeUserInfo } from "../../../services/auth.service";
+import toast, { Toaster } from "react-hot-toast";
 
 type FormValues = {
   email: string;
@@ -27,11 +28,13 @@ const SignInPage = () => {
       storeUserInfo({ accessToken: res?.token });
      
     } catch (err: any) {
-      console.log(err);
+      toast.error(err?.data)
   
     }
   };
   return (
+   <>
+      <Toaster position="top-center" reverseOrder={false} />
     <div className="flex flex-col items-center justify-center h-screen">
     
     <div className="bg-white rounded-lg overflow-hidden shadow-md p-8 w-96">
@@ -54,13 +57,15 @@ const SignInPage = () => {
         </button>
       </Form>
 
-      <Link href="/signup">
-        <p className="mt-4 text-sm text-blue-500 hover:underline">
-          Don't have an account? Register here
+     
+        <p className="mt-4 text-sm ">
+          Don't have an account? <span className="text-blue-500 hover:underline"> <Link href="/signup"> Register here</Link></span>
         </p>
-      </Link>
+
+
     </div>
   </div>
+   </>
   );
 };
 

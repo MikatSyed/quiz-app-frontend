@@ -1,7 +1,7 @@
 "use client"
 import Image from 'next/image';
 import React from 'react';
-import logo from "../../assets/Questions-pana.png"
+import logo from "../../../public/assets/Questions-pana.png"
 import Link from 'next/link';
 
 
