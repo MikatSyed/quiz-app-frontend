@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useEffect, useState } from "react";
 import { useQuizCategoryQuery } from "@/redux/api/quizApi";
 import toast, { Toaster } from "react-hot-toast";
@@ -8,41 +8,33 @@ import Image from "next/image";
 import noData from '../../../public/assets/no-data.png';
 import { useAddLeaderBoardMutation } from "@/redux/api/leader-board";
 import { useLoggedUserQuery } from "@/redux/api/userApi";
+import QuizResults from "../QuizResults/QuizResults";
+
 
 const QuizPage = ({ id }: any) => {
   const router = useRouter();
-  const [quizData, setQuizData] = useState<{
-    content: string;
-    options: { id: string; content: string; type: string; questionId: string }[];
-    correctOptionId: string;
-    CategoryId: string;
-    id: string;
-  } | null>(null);
-
+  const [quizData, setQuizData] = useState<any[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [showAnswer, setShowAnswer] = useState(false);
   const [score, setScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [message, setMessage] = useState("");
-  
-  // Fetch logged-in user data
-  const { data: userData } = useLoggedUserQuery(undefined);
-  
-  // Leaderboard mutation
-  const [addLeaderBoard] = useAddLeaderBoardMutation();
+  const [userResponses, setUserResponses] = useState<{ [key: string]: string }>({});
+  const [showCorrectAnswers, setShowCorrectAnswers] = useState(false);
 
-  // Fetch quiz data based on the category ID
+  const { data: userData } = useLoggedUserQuery(undefined);
+  const [addLeaderBoard] = useAddLeaderBoardMutation();
   const { data, isLoading } = useQuizCategoryQuery(id);
 
   useEffect(() => {
     if (data) {
-      setQuizData(data?.data[currentQuestion]);
-      setMessage(""); 
+      setQuizData(data.data);
+      setMessage("");
     } else {
-      setQuizData(null);
+      setQuizData([]);
     }
-  }, [data, currentQuestion]);
+  }, [data]);
 
   useEffect(() => {
     if (message) {
@@ -50,32 +42,38 @@ const QuizPage = ({ id }: any) => {
     }
   }, [message]);
 
-  function handleOptionSelect(option: any) {
+  function handleOptionSelect(option: string) {
     setSelectedOption(option);
     setShowAnswer(true);
     setMessage("");
-    if (option === quizData?.correctOptionId) {
+    setUserResponses((prev) => ({
+      ...prev,
+      [quizData[currentQuestion].id]: option
+    }));
+
+    if (option === quizData[currentQuestion].correctOptionId) {
       setScore((prevScore) => prevScore + 1);
     }
   }
 
- async function handleNextClick() {
+  async function handleNextClick() {
     if (!selectedOption) {
       setMessage("Please select an option before proceeding.");
       return;
     }
+
     setCurrentQuestion((prevQn) => prevQn + 1);
     setShowAnswer(false);
     setSelectedOption("");
-    if (currentQuestion === (data?.data?.length || 0) - 1) {
+
+    if (currentQuestion === quizData.length - 1) {
       setShowResults(true);
       if (userData && userData.data) {
-      await  addLeaderBoard({
+        await addLeaderBoard({
           userId: userData.data.id,
-          score: score,
+          score: score * 10,
           categoryId: id,
-        })
-         
+        });
       }
     }
   }
@@ -86,10 +84,16 @@ const QuizPage = ({ id }: any) => {
     setScore(0);
     setSelectedOption("");
     setMessage("");
+    setUserResponses({});
+    setShowCorrectAnswers(false);
   }
 
   function handleBack() {
     router.push("/category");
+  }
+
+  function toggleCorrectAnswers() {
+    setShowCorrectAnswers((prev) => !prev);
   }
 
   return (
@@ -98,20 +102,16 @@ const QuizPage = ({ id }: any) => {
       <div className="flex items-center justify-center flex-col p-4">
         {isLoading ? (
           <LoadingSpinner />
-        ) : data?.data?.length > 0 ? (
+        ) : quizData.length > 0 ? (
           showResults ? (
-            <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg flex flex-col gap-4">
-              <h2 className="text-xl font-semibold text-center">Your Scores</h2>
-              <h3 className="text-lg text-center">
-                You scored {score} out of {data?.data?.length}
-              </h3>
-              <button
-                onClick={restartQuiz}
-                className="bg-purple-800 text-white px-6 py-2 rounded-md hover:bg-purple-900"
-              >
-                Start the Quiz Again
-              </button>
-            </div>
+            <QuizResults
+              score={score}
+              quizData={quizData}
+              userResponses={userResponses}
+              showCorrectAnswers={showCorrectAnswers}
+              onToggleCorrectAnswers={toggleCorrectAnswers}
+              onRestart={restartQuiz}
+            />
           ) : (
             <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg flex flex-col gap-6">
               <div className="border-b pb-4">
@@ -121,9 +121,9 @@ const QuizPage = ({ id }: any) => {
               </div>
               <div className="flex flex-col">
                 <>
-                  <h1 className="text-xl font-medium text-gray-700">{quizData?.content}</h1>
+                  <h1 className="text-xl font-medium text-gray-700">{quizData[currentQuestion]?.content}</h1>
                   <div className="flex flex-col gap-2 mt-4">
-                    {quizData?.options?.map((option) => (
+                    {quizData[currentQuestion]?.options?.map((option:any) => (
                       <button
                         key={option.id}
                         className={`px-4 py-2 rounded-md border border-gray-300 ${
@@ -142,7 +142,7 @@ const QuizPage = ({ id }: any) => {
 
               <div className="border-t pt-4 flex justify-between items-center">
                 <p className="font-semibold">
-                  {currentQuestion + 1} out of {data?.data?.length}
+                  {currentQuestion + 1} out of {quizData.length}
                 </p>
                 <button
                   onClick={handleNextClick}
