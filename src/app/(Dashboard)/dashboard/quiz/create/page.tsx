@@ -28,8 +28,9 @@ const CreateQuiz = () => {
         { content: values.options.content4, type: "D" },
       ],
     };
+    const toastId =  toast.loading('Posting..')
     try {
-      console.log(formattedData, "32");
+     
       const res = await addQuiz(formattedData).unwrap();
       console.log(res);
 
@@ -48,6 +49,8 @@ const CreateQuiz = () => {
       // }, 2000);
     } catch (err) {
       console.log(err);
+    }finally{
+      toast.dismiss(toastId)
     }
   };
 

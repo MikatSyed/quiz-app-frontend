@@ -12,7 +12,7 @@ const CategoryCard = (data:any) => {
      <Link href={`quiz/${id}`}>
      <div className=" mx-auto bg-white border  shadow-lg rounded-md p-4 text-center">
     <Image
-        src={img} // Replace with the actual image URL
+        src={img} 
         alt={title}
         className="w-20 h-20 object-cover mx-auto rounded-full mb-4"
        layout='responsive'

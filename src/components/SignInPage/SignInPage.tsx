@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Form from "../UI/Forms/Form";
 import FormInput from "../UI/FormInput/FormInput";
 import Link from "next/link";
@@ -10,8 +10,7 @@ import { storeUserInfo } from "../../../services/auth.service";
 import toast, { Toaster } from "react-hot-toast";
 import { yupResolver } from "@hookform/resolvers/yup";
 import loginSchema from "@/schemas/login";
-import Image from "next/image"; // Ensure you have your logo file at this path
-import logo from '../../../public/assets/logo (2).png';
+import { HiEye, HiEyeOff } from "react-icons/hi"; // Import icons from react-icons
 
 type FormValues = {
   email: string;
@@ -21,8 +20,9 @@ type FormValues = {
 const SignInPage = () => {
   const { push } = useRouter();
   const [signin] = useSigninMutation();
+  const [showPassword, setShowPassword] = useState(false); 
 
-  // Handle regular sign in
+
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
     try {
       const res = await signin({ ...data }).unwrap();
@@ -63,7 +63,9 @@ const SignInPage = () => {
       <div className="flex flex-col items-center justify-center h-screen">
         <div className="bg-white rounded-lg overflow-hidden shadow-md p-8 w-96">
           <div className="flex justify-center py-6">
-            <h1 className="text-4xl font-semibold"><span className="text-purple-900">Quiz</span> App</h1>
+            <h1 className="text-4xl font-semibold">
+              <span className="text-purple-900">Quiz</span> App
+            </h1>
           </div>
 
           <h2 className="text-2xl font-semibold mb-6">Sign In</h2>
@@ -72,8 +74,24 @@ const SignInPage = () => {
             <div className="mb-4">
               <FormInput name="email" label="Email" />
             </div>
-            <div className="mb-4">
-              <FormInput name="password" label="Password" type="password" />
+            <div className="mb-4 relative"> 
+              <FormInput
+                name="password"
+                label="Password"
+                type={showPassword ? "text" : "password"} 
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)} 
+                className="absolute left-64 top-7 text-gray-600" 
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <HiEyeOff className="w-4 h-4" /> 
+                ) : (
+                  <HiEye className="w-4 h-4" /> 
+                )}
+              </button>
             </div>
 
             <button
@@ -86,7 +104,7 @@ const SignInPage = () => {
 
           <div className="mt-4">
             <button
-              onClick={handleAdminLogin} 
+              onClick={handleAdminLogin}
               className="text-sm text-white bg-purple-800 hover:bg-purple-900 px-4 py-4 rounded-full w-full transition duration-300"
             >
               Login as Admin

@@ -19,8 +19,8 @@ const CategoryPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
           {categoryData?.map((item: any) => (
             <Link href={`quiz/${item?.id}`} key={item.id} className="group">
-              <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center p-6 transform hover:scale-105 hover:bg-gradient-to-br from-purple-800 to-indigo-600">
-                <div className="bg-gradient-to-tr from-purple-600 to-purple-400 p-4 rounded-full mb-4 transition-transform duration-300 group-hover:scale-110">
+              <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center p-6 transform hover:scale-105 hover:bg-gradient-to-br from-purple-900 to-indigo-600">
+                <div className="bg-gradient-to-tr from-purple-600 to-purple-400 p-2 rounded-full mb-4 ">
                   <Image
                     src={category}
                     alt="category image"
@@ -33,9 +33,7 @@ const CategoryPage = () => {
                   <h3 className="text-lg font-semibold text-gray-900 group-hover:text-white mb-1">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-gray-500 group-hover:text-gray-100">
-                    {item.description}
-                  </p>
+                 
                 </div>
               </div>
             </Link>

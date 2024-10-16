@@ -38,6 +38,7 @@ const CategoryTable = ({ categories }: any) => {
         <thead>
           <tr>
             <th className="py-2 px-4 bg-gray-100 border-b">Title</th>
+            <th className="py-2 px-4 bg-gray-100 border-b">Date</th>
             <th className="py-2 px-4 bg-gray-100 border-b">Actions</th>
           </tr>
         </thead>
@@ -45,6 +46,15 @@ const CategoryTable = ({ categories }: any) => {
           {categories?.map((category: any) => (
             <tr key={category.id}>
               <td className="py-2 px-4">{category.title}</td>
+              <td className="py-2 px-4"> {new Date(category.createdAt).toLocaleString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        //   hour: "2-digit",
+                        //   minute: "2-digit",
+                        //   second: "2-digit",
+                        //   hour12: true,
+                        })}</td>
               <td className="py-2 px-4">
                <Link href={`/dashboard/category/edit/${category.id}`}>
                <button  

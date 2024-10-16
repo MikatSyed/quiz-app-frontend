@@ -21,7 +21,7 @@ const AddCategory = () => {
   const onSubmit = async (values:any) => {
    let data  = {...values};
    data.createdById = userData?.id;
-
+   const toastId =  toast.loading('Posting..')
     try {
         const res = await addCategory(data).unwrap()
         console.log(res);
@@ -38,6 +38,8 @@ const AddCategory = () => {
      
     } catch (err) {
       console.log(err);
+    }finally{
+      toast.dismiss(toastId)
     }
   };
 

@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { FaCrown } from "react-icons/fa"; // Import the crown icon from Font Awesome
+import { FaCrown } from "react-icons/fa"; 
 import Navbar from "../Navbar/Navbar";
 import { useLeaderBoardsQuery } from "@/redux/api/leader-board";
 import LoadingSpinner from "../UI/LoadingSpinner/LoadingSpinner";
 
-// Define the TypeScript type for a leaderboard entry
+
 type LeaderboardEntry = {
   id: string;
   username: string;
@@ -14,14 +14,14 @@ type LeaderboardEntry = {
   createdAt: string;
 };
 
-// Leaderboard component
+
 const Leaderboard: React.FC = () => {
-  // Fetch the leaderboard data
+  
   const { data, isLoading, error } = useLeaderBoardsQuery(undefined);
   
-  // Pagination state
+  
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Show 10 items per page
+  const itemsPerPage = 10; 
   
   if (isLoading) {
     return <LoadingSpinner />;
@@ -31,24 +31,24 @@ const Leaderboard: React.FC = () => {
     return <p>Error fetching leaderboard data.</p>;
   }
 
-  // Calculate the start and end index for pagination
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  // Get the paginated data
+
   const paginatedData = data?.data?.slice(startIndex, endIndex);
 
-  // Calculate total pages
+
   const totalPages = Math.ceil((data?.data?.length || 0) / itemsPerPage);
 
-  // Handle previous page click
+
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
-  // Handle next page click
+ 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);

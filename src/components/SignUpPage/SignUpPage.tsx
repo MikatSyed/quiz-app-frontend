@@ -1,5 +1,5 @@
 "use client"
-import React from "react";
+import React, { useState } from "react";
 import Form from "../UI/Forms/Form";
 import FormInput from "../UI/FormInput/FormInput";
 import Link from "next/link";
@@ -8,10 +8,12 @@ import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import signUpSchema from "@/schemas/signup";
+import { HiEye, HiEyeOff } from "react-icons/hi";
 
 const SignUpPage = () => {
-    const {push} = useRouter();
+  const {push} = useRouter();
   const [signup] = useSignupMutation()
+  const [showPassword, setShowPassword] = useState(false); 
 
   const onSubmit = async (values:any) => {
     values.role = "performer"
@@ -51,9 +53,25 @@ const SignUpPage = () => {
         <div className="mb-4">
           <FormInput name="email" label="Email" size="large"/>
         </div>
-        <div className="mb-4">
-          <FormInput name="password" label="Password" type="password" size="large"/>
-        </div>
+        <div className="mb-4 relative"> 
+              <FormInput
+                name="password"
+                label="Password"
+                type={showPassword ? "text" : "password"} 
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)} 
+                className="absolute left-64 top-7 text-gray-600" 
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <HiEyeOff className="w-4 h-4" /> 
+                ) : (
+                  <HiEye className="w-4 h-4" /> 
+                )}
+              </button>
+            </div>
 
       
 
