@@ -64,7 +64,7 @@ const SignInPage = () => {
         <div className="bg-white rounded-lg overflow-hidden shadow-md p-8 w-96">
           <div className="flex justify-center py-6">
             <h1 className="text-4xl font-semibold">
-              <span className="text-purple-900">Quiz</span> App
+              <span className="text-purple-900">Quizzyfy</span> 
             </h1>
           </div>
 

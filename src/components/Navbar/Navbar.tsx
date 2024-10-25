@@ -23,7 +23,7 @@ const Navbar = () => {
         {/* Left side - Name */}
         <div className="text-xl font-bold">
           <Link href="/" className="hover:text-gray-300 transition-colors">
-            QuizApp
+          Quizzyfy
           </Link>
         </div>
 

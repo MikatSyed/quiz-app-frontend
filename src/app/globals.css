@@ -21,6 +21,13 @@
     cursor: pointer;
   }
 
+  @media screen and (min-width: 1400px) {
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+  }
+
  
 
   
